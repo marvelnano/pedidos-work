@@ -225,8 +225,8 @@ function renderPedidos() {
   const buscar = $('#input-buscar-pedido').value.toLowerCase();
   const personaInput = $('#persona-pedidos-input')?.value || '';
   const personaSelId = findPersonaIdByNombre(personaInput);
-  const pmin = Number($('#precio-min').value) || 0;
-  const pmax = Number($('#precio-max').value) || Number.MAX_SAFE_INTEGER;
+  const pmin = Number($('#precio-min')?.value) || 0;
+  const pmax = Number($('#precio-max')?.value) || Number.MAX_SAFE_INTEGER;
   const personas = Storage.personas.all();
   const list = Storage.pedidos.all()
     .filter(p => !personaSelId || p.personaId === personaSelId)
@@ -344,8 +344,8 @@ function openPedidoModal(id = null) {
 function initPedidos() {
   $('#btn-add-pedido').onclick = () => openPedidoModal();
   $('#input-buscar-pedido').oninput = renderPedidos;
-  $('#precio-min').oninput = renderPedidos;
-  $('#precio-max').oninput = renderPedidos;
+  if ($('#precio-min')) $('#precio-min').oninput = renderPedidos;
+  if ($('#precio-max')) $('#precio-max').oninput = renderPedidos;
   $('#persona-pedidos-input').oninput = renderPedidos;
   $('#btn-cancel-pedido').onclick = () => { $('#modal-pedido').close(); };
   $('#pedido-producto-input').oninput = () => {
@@ -400,7 +400,20 @@ function init() {
   refreshProductoOptions();
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    init();
+  } catch (e) {
+    console.error('Error inicializando la app:', e);
+    showToast('Ocurrió un error inicializando la app. Revisa la consola.', 'error', 4000);
+  }
+});
+
+// Capturar errores no manejados para tener feedback en UI
+window.addEventListener('error', (e) => {
+  console.error('Uncaught error:', e.error || e.message);
+  showToast('Error inesperado: ' + (e.error?.message || e.message || 'ver consola'), 'error', 4000);
+});
 
 // ===== Productos UI =====
 function renderProductos() {
@@ -494,7 +507,67 @@ function initDataActions() {
   const btnOpenFS = $('#btn-abrir-archivo');
 
   btnExport.onclick = exportJSON;
-  btnImport.onclick = () => fileInput.click();
+  btnImport.onclick = async () => {
+    try {
+      if ('showOpenFilePicker' in window) {
+        const [handle] = await window.showOpenFilePicker({
+          types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+        });
+        const file = await handle.getFile();
+        const text = await file.text();
+        const data = JSON.parse(text);
+        Storage.loadSnapshot(data);
+        renderPersonas();
+        renderRotacion();
+        refreshPersonaOptions();
+        renderPedidos();
+        renderSubtotales();
+        renderProductos();
+        refreshProductoOptions();
+        showToast('Datos importados correctamente', 'success');
+        return;
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('No se pudo abrir el archivo', 'error');
+      return;
+    }
+    // Fallback: crear input temporal para evitar restricciones de elementos ocultos
+    try {
+      const temp = document.createElement('input');
+      temp.type = 'file';
+      temp.accept = 'application/json,.json';
+      temp.style.position = 'fixed';
+      temp.style.left = '-9999px';
+      document.body.appendChild(temp);
+      temp.onchange = async (e2) => {
+        try {
+          const f = e2.target.files?.[0];
+          if (!f) return;
+          const text = await f.text();
+          const data = JSON.parse(text);
+          Storage.loadSnapshot(data);
+          renderPersonas();
+          renderRotacion();
+          refreshPersonaOptions();
+          renderPedidos();
+          renderSubtotales();
+          renderProductos();
+          refreshProductoOptions();
+          showToast('Datos importados correctamente', 'success');
+        } catch (err2) {
+          console.error(err2);
+          showToast('Error importando JSON', 'error');
+        } finally {
+          temp.remove();
+        }
+      };
+      temp.click();
+    } catch (err3) {
+      console.error(err3);
+      showToast('No se pudo abrir el selector de archivos', 'error');
+    }
+  };
   fileInput.onchange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -506,6 +579,9 @@ function initDataActions() {
       renderRotacion();
       refreshPersonaOptions();
       renderPedidos();
+      renderSubtotales();
+      renderProductos();
+      refreshProductoOptions();
       showToast('Datos importados correctamente', 'success');
     } catch (err) {
       console.error(err);
@@ -572,6 +648,9 @@ async function openFromFileFS() {
     renderRotacion();
     refreshPersonaOptions();
     renderPedidos();
+    renderSubtotales();
+    renderProductos();
+    refreshProductoOptions();
     showToast('Archivo cargado', 'success');
   } catch (e) {
     if (e.message === 'no-fs') {

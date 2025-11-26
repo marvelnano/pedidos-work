@@ -419,11 +419,11 @@ function renderProductos() {
   list.forEach(p => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${p.nombre}</td>
-      <td>${p.descripcion || '-'}</td>
-      <td class="right">${formatCurrency(p.precio)}</td>
-      <td><span class="badge ${p.activo ? 'active' : 'inactive'}">${p.activo ? 'Activo' : 'Inactivo'}</span></td>
-      <td class="right">
+      <td data-label="Nombre">${p.nombre}</td>
+      <td data-label="Descripción">${p.descripcion || '-'}</td>
+      <td class="right" data-label="Precio">${formatCurrency(p.precio)}</td>
+      <td data-label="Estado"><span class="badge ${p.activo ? 'active' : 'inactive'}">${p.activo ? 'Activo' : 'Inactivo'}</span></td>
+      <td class="right" data-label="Acciones">
         <button class="secondary" data-edit-prod="${p.id}">Editar</button>
         <button class="danger" data-del-prod="${p.id}">Eliminar</button>
       </td>

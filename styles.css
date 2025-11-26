@@ -152,6 +152,34 @@ label { display: block; margin: 8px 0 6px; font-size: 12px; color: var(--muted);
   #tabla-pedidos tfoot td { border: none; padding: 8px 0; }
 }
 
+/* Stacked layout para la tabla de Productos en móvil */
+@media (max-width: 720px) {
+  #tabla-productos thead { display: none; }
+  #tabla-productos, #tabla-productos tbody, #tabla-productos tr, #tabla-productos td {
+    display: block;
+    width: 100%;
+  }
+  #tabla-productos tr {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255,255,255,.02);
+  }
+  #tabla-productos td {
+    border: none;
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  #tabla-productos td::before { content: attr(data-label); color: var(--muted); }
+  #tabla-productos td.right { text-align: left; }
+  #tabla-productos td[data-label="Acciones"] { display: flex; gap: 8px; }
+  #tabla-productos td[data-label="Acciones"]::before { content: none; }
+  #tabla-productos button { padding: 8px 10px; }
+}
+
 /* Tabs panels */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }

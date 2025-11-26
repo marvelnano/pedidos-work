@@ -111,6 +111,47 @@ label { display: block; margin: 8px 0 6px; font-size: 12px; color: var(--muted);
 .right { text-align: right; }
 .table tr:hover td { background: rgba(255,255,255,.02); }
 
+/* Responsive tables: wrap with .table-responsive */
+.table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-responsive .table { min-width: 720px; }
+@media (max-width: 480px) {
+  .table th, .table td { padding: 8px; }
+}
+
+/* Stacked layout para la tabla de Pedidos en móvil */
+@media (max-width: 720px) {
+  #tabla-pedidos thead { display: none; }
+  #tabla-pedidos, #tabla-pedidos tbody, #tabla-pedidos tr, #tabla-pedidos td, #tabla-pedidos tfoot {
+    display: block;
+    width: 100%;
+  }
+  #tabla-pedidos tr {
+    margin: 12px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255,255,255,.02);
+  }
+  #tabla-pedidos td {
+    border: none;
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  #tabla-pedidos td::before {
+    content: attr(data-label);
+    color: var(--muted);
+  }
+  #tabla-pedidos td.right { text-align: left; }
+  #tabla-pedidos td[data-label="Acciones"] { display: flex; gap: 8px; }
+  #tabla-pedidos td[data-label="Acciones"]::before { content: none; }
+  #tabla-pedidos button { padding: 8px 10px; }
+  #tabla-pedidos tfoot { margin-top: 16px; }
+  #tabla-pedidos tfoot tr { border: none; background: transparent; margin: 0; }
+  #tabla-pedidos tfoot td { border: none; padding: 8px 0; }
+}
+
 /* Tabs panels */
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }

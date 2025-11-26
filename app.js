@@ -242,12 +242,12 @@ function renderPedidos() {
     totalGeneral += total;
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${persona ? persona.nombre : '-'}</td>
-      <td>${item.descripcion}</td>
-      <td class="right">${item.cantidad}</td>
-      <td class="right">${formatCurrency(item.precio)}</td>
-      <td class="right">${formatCurrency(total)}</td>
-      <td class="right">
+      <td data-label="Persona">${persona ? persona.nombre : '-'}</td>
+      <td data-label="Descripción">${item.descripcion}</td>
+      <td class="right" data-label="Cantidad">${item.cantidad}</td>
+      <td class="right" data-label="Precio">${formatCurrency(item.precio)}</td>
+      <td class="right" data-label="Total">${formatCurrency(total)}</td>
+      <td class="right" data-label="Acciones">
         <button class="secondary" data-edit-p="${item.id}">Editar</button>
         <button class="danger" data-del-p="${item.id}">Eliminar</button>
       </td>

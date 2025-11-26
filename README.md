@@ -28,14 +28,32 @@ Datos persistidos en `localStorage` mediante `data.js`.
 Para servir en `localhost` rápidamente:
 
 ```powershell
-# Si tienes Python
+# Si tienes Python (ejecuta dentro de la carpeta del proyecto)
+Push-Location "e:\...\Codigos\proyectos\pedidos-work"
 python -m http.server 5500
-# Luego abre http://localhost:5500/e:/jvelasquez/Codigos/proyectos/pedidos/index.html
+# Luego abre http://localhost:5500
 
 # O con Node.js
-npx serve e:\jvelasquez\Codigos\proyectos\pedidos -l 5500
+npx serve -l 5500 "e:\...\Codigos\proyectos\pedidos-work"
 # Luego abre http://localhost:5500
 ```
+
+## Deploy (GitHub Pages)
+- Habilita Pages: en GitHub ve a `Settings` > `Pages`.
+- En "Build and deployment" elige "Deploy from a branch".
+- Selecciona `main` y carpeta `/ (root)` y guarda.
+- Espera 1-3 minutos hasta ver el despliegue.
+
+URL pública (una vez activo):
+
+```
+https://marvelnano.github.io/pedidos-work/
+```
+
+Notas:
+- Este proyecto usa rutas relativas (por ejemplo `styles.css`, `app.js`), por lo que funciona bien bajo `/pedidos-work/`.
+- Activa "Enforce HTTPS" en la misma página de Pages.
+- Si deseas dominio propio, configura `CNAME` en `Settings > Pages` y crea un registro DNS `CNAME` apuntando a `marvelnano.github.io`.
 
 ## Notas
 - Todo se guarda localmente en el navegador. Para limpiar, borra el `localStorage` o usa el botón "Limpiar Rotación" para esa sección.

@@ -1,0 +1,137 @@
+/* Base */
+:root {
+  --bg: #0f141b;
+  --card: #141b22;
+  --muted: #98a2b3;
+  --text: #e6eaf0;
+  --primary: #4f79ff;
+  --primary-600: #3f63d6;
+  --secondary: #1f2937;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --border: #243041;
+  --accent: #2a3647;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif;
+  background: radial-gradient(1200px 800px at 10% 10%, #101520 0%, #0a0f16 60%, #080d14 100%);
+  color: var(--text);
+}
+
+/* Header */
+.app-header {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(180deg, rgba(10,15,22,.8), rgba(10,15,22,.5));
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+  z-index: 20;
+}
+.header-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.app-header h1 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+.tab {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.tab.active { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(79,121,255,.2) inset; }
+
+/* Layout */
+.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.panel-header h2 { margin: 0; font-size: 18px; }
+.panel-header .actions { display: flex; gap: 8px; }
+
+/* Cards */
+.card {
+  background: linear-gradient(180deg, rgba(20,27,34, .9), rgba(20,27,34, .7));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+/* Controls */
+button {
+  appearance: none;
+  border: none;
+  background: var(--accent);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+button.primary { background: var(--primary); }
+button.primary:hover { background: var(--primary-600); }
+button.secondary { background: var(--secondary); }
+button.danger { background: var(--danger); }
+button.success { background: var(--success); }
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+}
+label { display: block; margin: 8px 0 6px; font-size: 12px; color: var(--muted); }
+.checkbox { display: flex; gap: 8px; align-items: center; }
+
+/* Grid */
+.grid { display: grid; gap: 12px; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-responsive { grid-template-columns: 1fr; }
+@media (min-width: 900px) { .grid-responsive { grid-template-columns: 1fr 1fr; } }
+
+/* Tables */
+.table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.table th, .table td { border-bottom: 1px solid var(--border); padding: 10px; }
+.table thead th { text-align: left; color: var(--muted); font-weight: 600; }
+.right { text-align: right; }
+.table tr:hover td { background: rgba(255,255,255,.02); }
+
+/* Tabs panels */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Modal */
+.modal::backdrop { background: rgba(0,0,0,.5); }
+.modal { border: 1px solid var(--border); border-radius: 16px; padding: 0; }
+.form { padding: 16px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+/* Misc */
+.muted { color: var(--muted); }
+
+/* Badges */
+.badge { padding: 4px 8px; border-radius: 6px; font-size: 12px; }
+.badge.active { background: rgba(34,197,94,.15); color: #a3e3b9; border: 1px solid rgba(34,197,94,.4); }
+.badge.inactive { background: rgba(239,68,68,.15); color: #f3b3b3; border: 1px solid rgba(239,68,68,.4); }
+
+/* Toasts */
+#toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
+.toast { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 12px 14px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.25); min-width: 240px; }
+.toast.success { border-color: rgba(34,197,94,.4); }
+.toast.error { border-color: rgba(239,68,68,.4); }
+.toast.info { border-color: rgba(79,121,255,.4); }

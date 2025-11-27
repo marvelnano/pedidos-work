@@ -55,6 +55,11 @@ Notas:
 - Activa "Enforce HTTPS" en la misma página de Pages.
 - Si deseas dominio propio, configura `CNAME` en `Settings > Pages` y crea un registro DNS `CNAME` apuntando a `marvelnano.github.io`.
 
+### Cargar datos de demo
+- Botón `Cargar data`: importa automáticamente `db/db_pedidos.json` del repo.
+- Requiere servir la carpeta por HTTP/HTTPS (GitHub Pages o `localhost`); bajo `file://` los navegadores bloquean `fetch`.
+- Puedes modificar el archivo `db/db_pedidos.json` con tu snapshot.
+
 ## Notas
 - Todo se guarda localmente en el navegador. Para limpiar, borra el `localStorage` o usa el botón "Limpiar Rotación" para esa sección.
 - El diseño es responsive y funciona en móviles y escritorio.

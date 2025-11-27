@@ -505,6 +505,7 @@ function initDataActions() {
   const fileInput = $('#file-import');
   const btnSaveFS = $('#btn-guardar-archivo');
   const btnOpenFS = $('#btn-abrir-archivo');
+  const btnLoadPreset = $('#btn-cargar-data');
 
   btnExport.onclick = exportJSON;
   btnImport.onclick = async () => {
@@ -593,6 +594,31 @@ function initDataActions() {
 
   btnSaveFS.onclick = saveToFileFS;
   btnOpenFS.onclick = openFromFileFS;
+
+  btnLoadPreset.onclick = async () => {
+    try {
+      // Bajo file:// los navegadores bloquean fetch de recursos locales
+      if (location.protocol === 'file:') {
+        showToast('Para "Cargar data" abre via http://localhost o GitHub Pages', 'info', 4000);
+        return;
+      }
+      const res = await fetch('db/db_pedidos.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('No encontrado (' + res.status + ')');
+      const data = await res.json();
+      Storage.loadSnapshot(data);
+      renderPersonas();
+      renderRotacion();
+      refreshPersonaOptions();
+      renderPedidos();
+      renderSubtotales();
+      renderProductos();
+      refreshProductoOptions();
+      showToast('Datos cargados desde db_pedidos.json', 'success');
+    } catch (e) {
+      console.error(e);
+      showToast('No se pudo cargar db_pedidos.json. Revisa que exista y sirve por HTTP/HTTPS.', 'error');
+    }
+  };
 }
 
 function exportJSON() {

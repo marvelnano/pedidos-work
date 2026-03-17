@@ -94,8 +94,40 @@ input, select {
   background: var(--card);
   color: var(--text);
 }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(79,121,255,.22);
+}
 label { display: block; margin: 8px 0 6px; font-size: 12px; color: var(--muted); }
 .checkbox { display: flex; gap: 8px; align-items: center; }
+
+/* Inputs con botón limpiar */
+.input-clearable {
+  position: relative;
+}
+.input-clearable input {
+  padding-right: 44px;
+}
+.clear-input {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  padding: 0;
+  border: 1px solid var(--border);
+  background: var(--secondary);
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+}
+.clear-input:hover {
+  color: var(--text);
+  border-color: var(--primary);
+}
 
 /* Grid */
 .grid { display: grid; gap: 12px; }
@@ -185,10 +217,48 @@ label { display: block; margin: 8px 0 6px; font-size: 12px; color: var(--muted);
 .tab-panel.active { display: block; }
 
 /* Modal */
-.modal::backdrop { background: rgba(0,0,0,.5); }
-.modal { border: 1px solid var(--border); border-radius: 16px; padding: 0; }
-.form { padding: 16px; }
+.modal::backdrop {
+  background: rgba(2, 6, 12, .72);
+  backdrop-filter: blur(2px);
+}
+.modal {
+  width: min(92vw, 560px);
+  max-height: 88vh;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 0;
+  background: linear-gradient(180deg, rgba(20,27,34,.98), rgba(20,27,34,.92));
+  color: var(--text);
+  box-shadow: 0 26px 70px rgba(0,0,0,.45);
+}
+.form {
+  padding: 18px;
+}
+.form h3 {
+  margin: 2px 0 10px;
+  font-size: 32px;
+}
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+@media (max-width: 640px) {
+  .modal {
+    width: min(96vw, 560px);
+    border-radius: 14px;
+  }
+  .form {
+    padding: 14px;
+  }
+  .form .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .modal-actions {
+    justify-content: stretch;
+  }
+  .modal-actions button {
+    flex: 1;
+  }
+}
 
 /* Misc */
 .muted { color: var(--muted); }

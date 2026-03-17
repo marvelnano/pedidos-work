@@ -24,8 +24,70 @@ function switchTab(tab) {
   $$('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
 }
 
+function rerenderByTab(tab) {
+  if (tab === 'personas') {
+    renderPersonas();
+    refreshPersonaOptions();
+    return;
+  }
+  if (tab === 'responsables') {
+    renderRotacion();
+    refreshPersonaOptions();
+    return;
+  }
+  if (tab === 'productos') {
+    renderProductos();
+    refreshProductoOptions();
+    return;
+  }
+  if (tab === 'pedidos') {
+    refreshPersonaOptions();
+    refreshProductoOptions();
+    renderPedidos();
+    renderSubtotales();
+  }
+}
+
 function initTabs() {
-  $$('.tab').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+  $$('.tab').forEach(b => b.addEventListener('click', async () => {
+    const tab = b.dataset.tab;
+    switchTab(tab);
+    try {
+      if (typeof Storage.refreshByTab === 'function') {
+        await Storage.refreshByTab(tab);
+      } else if (typeof Storage.refresh === 'function') {
+        await Storage.refresh();
+      } else if (typeof Storage.init === 'function') {
+        await Storage.init();
+      }
+      rerenderByTab(tab);
+    } catch (error) {
+      console.error('Error refrescando al cambiar tab:', error);
+      showToast('No se pudo refrescar la data', 'error');
+    }
+  }));
+}
+
+function initClearableInputs() {
+  $$('button[data-clear-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.clearTarget;
+      const input = targetId ? document.getElementById(targetId) : null;
+      if (!input) return;
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.focus();
+    });
+  });
+
+  ['persona-pedidos-input', 'pedido-persona-input', 'pedido-producto-input', 'responsable-persona-input'].forEach(id => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.addEventListener('focus', () => {
+      if (input.value) input.select();
+    });
+  });
 }
 
 // Personas
@@ -403,6 +465,7 @@ function findProductoByNombre(nombre) {
 
 function init() {
   initTabs();
+  initClearableInputs();
   initPersonas();
   initResponsables();
   initPedidos();

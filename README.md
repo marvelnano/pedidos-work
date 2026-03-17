@@ -2,6 +2,8 @@
 
 Aplicación web para gestionar personas, productos, pedidos y rotación de responsables, con persistencia en PostgreSQL.
 
+Para instalación local rápida en cualquier PC: revisa `SETUP.md`.
+
 ## Estructura
 - `index.html`
 - `css/styles.css`

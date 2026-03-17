@@ -72,6 +72,31 @@ async function refreshAll() {
   state.rotaciones = [...actual, ...history];
 }
 
+async function refreshPersonasOnly() {
+  const personasRows = await api('/personas');
+  state.personas = personasRows.map(toUiPersona);
+}
+
+async function refreshProductosOnly() {
+  const productosRows = await api('/productos');
+  state.productos = productosRows.map(toUiProducto);
+}
+
+async function refreshPedidosOnly() {
+  const pedidosRows = await api('/pedidos');
+  state.pedidos = pedidosRows.map(toUiPedido);
+}
+
+async function refreshRotacionesOnly() {
+  const [rotacionActual, rotacionesHistorial] = await Promise.all([
+    api('/rotaciones/current'),
+    api('/rotaciones/history')
+  ]);
+  const actual = rotacionActual ? [toUiRotacion(rotacionActual)] : [];
+  const history = (rotacionesHistorial || []).map(toUiRotacion);
+  state.rotaciones = [...actual, ...history];
+}
+
 const Storage = {
   init: async () => {
     try {
@@ -82,6 +107,42 @@ const Storage = {
       state.productos = [];
       state.pedidos = [];
       state.rotaciones = [];
+    }
+  },
+
+  refresh: async () => {
+    try {
+      await refreshAll();
+      return true;
+    } catch (error) {
+      console.error('No se pudo refrescar la data desde API:', error);
+      return false;
+    }
+  },
+
+  refreshByTab: async (tab) => {
+    try {
+      if (tab === 'personas') {
+        await refreshPersonasOnly();
+        return true;
+      }
+      if (tab === 'responsables') {
+        await Promise.all([refreshPersonasOnly(), refreshRotacionesOnly()]);
+        return true;
+      }
+      if (tab === 'productos') {
+        await refreshProductosOnly();
+        return true;
+      }
+      if (tab === 'pedidos') {
+        await Promise.all([refreshPedidosOnly(), refreshPersonasOnly(), refreshProductosOnly()]);
+        return true;
+      }
+      await refreshAll();
+      return true;
+    } catch (error) {
+      console.error('No se pudo refrescar la data por pestaña:', error);
+      return false;
     }
   },
 

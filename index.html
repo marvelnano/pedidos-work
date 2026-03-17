@@ -157,7 +157,10 @@
         <div class="grid grid-2">
           <div>
             <label>Persona</label>
-            <input type="text" id="persona-pedidos-input" list="datalist-personas" placeholder="Escribe y selecciona..." />
+            <div class="input-clearable">
+              <input type="text" id="persona-pedidos-input" list="datalist-personas" placeholder="Escribe y selecciona..." />
+              <button type="button" class="clear-input" data-clear-target="persona-pedidos-input" aria-label="Limpiar persona">×</button>
+            </div>
             <datalist id="datalist-personas"></datalist>
           </div>
           <div>
@@ -256,10 +259,16 @@
     <form method="dialog" id="form-pedido" class="form">
       <h3 id="titulo-modal-pedido">Agregar Pedido</h3>
       <label>Persona</label>
-      <input type="text" id="pedido-persona-input" list="datalist-personas-modal" placeholder="Escribe y selecciona..." required />
+      <div class="input-clearable">
+        <input type="text" id="pedido-persona-input" list="datalist-personas-modal" placeholder="Escribe y selecciona..." required />
+        <button type="button" class="clear-input" data-clear-target="pedido-persona-input" aria-label="Limpiar persona">×</button>
+      </div>
       <datalist id="datalist-personas-modal"></datalist>
       <label>Producto frecuente</label>
-      <input type="text" id="pedido-producto-input" list="datalist-productos" placeholder="(Opcional) Escribe para autocompletar" />
+      <div class="input-clearable">
+        <input type="text" id="pedido-producto-input" list="datalist-productos" placeholder="(Opcional) Escribe para autocompletar" />
+        <button type="button" class="clear-input" data-clear-target="pedido-producto-input" aria-label="Limpiar producto">×</button>
+      </div>
       <datalist id="datalist-productos"></datalist>
       <label>Descripción</label>
       <input type="text" id="pedido-descripcion" required />
@@ -285,7 +294,10 @@
       <h3 id="titulo-modal-responsable">Editar Responsable</h3>
       <input type="hidden" id="responsable-dia" />
       <label>Persona</label>
-      <input type="text" id="responsable-persona-input" list="datalist-personas-modal" placeholder="Escribe y selecciona..." required />
+      <div class="input-clearable">
+        <input type="text" id="responsable-persona-input" list="datalist-personas-modal" placeholder="Escribe y selecciona..." required />
+        <button type="button" class="clear-input" data-clear-target="responsable-persona-input" aria-label="Limpiar persona">×</button>
+      </div>
       <div class="modal-actions">
         <button type="button" value="cancel" class="secondary" id="btn-cancel-responsable">Cancelar</button>
         <button type="submit" class="primary">Guardar</button>

@@ -1,0 +1,16 @@
+{
+  "name": "pedidos-work",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gestión de pedidos con frontend web y backend Node.js + PostgreSQL",
+  "main": "js/backend/server.js",
+  "scripts": {
+    "start": "node js/backend/server.js",
+    "start:clean": "node js/backend/scripts/start-clean.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}

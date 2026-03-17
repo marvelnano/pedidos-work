@@ -1,66 +1,62 @@
-# Gestión de Pedidos (HTML/CSS/JS)
+# Gestión de Pedidos
 
-Sistema ligero para gestionar:
-- Personas (participantes) con estado activo/inactivo.
-- Responsables de compra por rotación semanal (L-V).
-- Pedidos por persona (descripción, cantidad, precio, total).
- - Productos: nueva sección para registrar productos frecuentes y reutilizarlos al crear pedidos.
-
-Datos persistidos en `localStorage` mediante `data.js`.
+Aplicación web para gestionar personas, productos, pedidos y rotación de responsables, con persistencia en PostgreSQL.
 
 ## Estructura
-- `index.html`: Vista principal con 3 pestañas.
-- `styles.css`: Tema oscuro moderno, responsive.
-- `data.js`: Módulo de persistencia y CRUD.
-- `app.js`: Lógica de UI y eventos.
+- `index.html`
+- `css/styles.css`
+- `js/frontend/app.js`
+- `js/frontend/data.js`
+- `js/backend/server.js`
+- `js/backend/routes/*.js`
+- `js/backend/db/index.js`
+- `db/db.sql`
 
-## Uso
-1. Abrir `index.html` en el navegador.
-2. Pestaña Personas: agregar/editar/eliminar. El campo "Límite sugerido" es informativo (no restringe).
-3. Pestaña Responsable: pulsar "Rotar Semana (L-V)" para asignaciones automáticas circulares.
-4. Pestaña Pedidos: agregar/editar/eliminar; filtros por persona, texto y rango de precios.
-5. Pestaña Productos: agregar/editar/eliminar productos frecuentes. En "Agregar Pedido" puedes seleccionar un producto para autocompletar descripción y precio.
+## Base de datos
+1. Ejecuta el script `db/db.sql` en PostgreSQL.
+2. La conexión por defecto del backend es:
 
-### Guardar en archivo
-- Exportar/Importar JSON: usa los botones del header para descargar un `.json` y luego volver a cargarlo.
-- Guardar/Abrir archivo (File System Access): disponible en Chrome/Edge bajo `https` o `http://localhost`. Permite guardar directamente sobre el mismo archivo.
-
-Para servir en `localhost` rápidamente:
-
-```powershell
-# Si tienes Python (ejecuta dentro de la carpeta del proyecto)
-Push-Location "e:\...\Codigos\proyectos\pedidos-work"
-python -m http.server 5500
-# Luego abre http://localhost:5500
-
-# O con Node.js
-npx serve -l 5500 "e:\...\Codigos\proyectos\pedidos-work"
-# Luego abre http://localhost:5500
+```txt
+postgresql://postgres:123P3d1dos123@db.kcizzknlbhzcegsmqxrv.supabase.co:5432/postgres
 ```
 
-## Deploy (GitHub Pages)
-- Habilita Pages: en GitHub ve a `Settings` > `Pages`.
-- En "Build and deployment" elige "Deploy from a branch".
-- Selecciona `main` y carpeta `/ (root)` y guarda.
-- Espera 1-3 minutos hasta ver el despliegue.
+Si deseas cambiarla, define la variable de entorno `DATABASE_URL`.
 
-URL pública (una vez activo):
-
-```
-https://marvelnano.github.io/pedidos-work/
+## Ejecutar backend
+```bash
+npm install
+npm start
 ```
 
-Notas:
-- Este proyecto usa rutas relativas (por ejemplo `styles.css`, `app.js`), por lo que funciona bien bajo `/pedidos-work/`.
-- Activa "Enforce HTTPS" en la misma página de Pages.
-- Si deseas dominio propio, configura `CNAME` en `Settings > Pages` y crea un registro DNS `CNAME` apuntando a `marvelnano.github.io`.
+La app completa queda en `http://localhost:3001` y la API en `http://localhost:3001/api`.
 
-### Cargar datos de demo
-- Botón `Cargar data`: importa automáticamente `db/db_pedidos.json` del repo.
-- Requiere servir la carpeta por HTTP/HTTPS (GitHub Pages o `localhost`); bajo `file://` los navegadores bloquean `fetch`.
-- Puedes modificar el archivo `db/db_pedidos.json` con tu snapshot.
+## Ejecutar frontend
+Si deseas servir solo archivos estáticos por separado (no recomendado para este setup), puedes usar:
 
-## Notas
-- Todo se guarda localmente en el navegador. Para limpiar, borra el `localStorage` o usa el botón "Limpiar Rotación" para esa sección.
-- El diseño es responsive y funciona en móviles y escritorio.
-- Los botones de "Guardar/Abrir archivo" requieren un contexto seguro (https o localhost) y un navegador compatible (Chrome/Edge). Si no está disponible, usa Exportar/Importar JSON.
+```bash
+npx serve -l 5500 .
+```
+
+Abre `http://localhost:5500`.
+
+## Deploy en Render
+Este repo ya incluye configuración en `render.yaml` para desplegar frontend + backend en un solo servicio.
+
+1. Sube el repositorio a GitHub.
+2. En Render: **New + > Blueprint** y selecciona el repo.
+3. Configura la variable `DATABASE_URL` en Render (Environment).
+4. Deploy.
+
+El health check es `GET /api/health`.
+
+## Comportamiento de borrado
+- Personas: borrado lógico (`estado=0`).
+- Productos: borrado lógico (`estado=0`).
+- Pedidos: borrado lógico (`estado=0`).
+- Rotación actual: limpiar cambia `estado=0` en rotación y asignaciones.
+
+## Datos de ejemplo
+Archivos JSON en carpeta `db/`:
+- `db_pedidos.json`
+- `pedidos-2025-11-26.json`
+- `pedidos-2025-11-26_v2.json`

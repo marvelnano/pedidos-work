@@ -7,20 +7,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <header class="app-header">
     <div class="header-bar">
       <h1>Gestión de Pedidos</h1>
-      <div class="header-actions">
+      <!--<div class="header-actions">
         <button class="secondary" id="btn-exportar">Exportar JSON</button>
         <input type="file" id="file-import" accept="application/json,.json" hidden />
         <button class="secondary" id="btn-importar">Importar JSON</button>
         <button class="secondary" id="btn-cargar-data" title="Carga automática desde db/db_pedidos.json">Cargar data</button>
         <button class="secondary" id="btn-guardar-archivo" title="Requiere Chrome/Edge en https o localhost">Guardar archivo</button>
         <button class="secondary" id="btn-abrir-archivo" title="Requiere Chrome/Edge en https o localhost">Abrir archivo</button>
-      </div>
+      </div>-->
     </div>
     <nav class="tabs">
       <button class="tab active" data-tab="personas">Personas</button>
@@ -293,8 +293,8 @@
     </form>
   </dialog>
 
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+  <script src="js/frontend/data.js"></script>
+  <script src="js/frontend/app.js"></script>
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>

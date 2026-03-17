@@ -17,7 +17,7 @@ Aplicación web para gestionar personas, productos, pedidos y rotación de respo
 2. La conexión por defecto del backend es:
 
 ```txt
-postgresql://postgres:123P3d1dos123@db.kcizzknlbhzcegsmqxrv.supabase.co:5432/postgres
+postgresql://postgres.kcizzknlbhzcegsmqxrv:[YOUR-PASSWORD]@aws-1-us-east-1.pooler.supabase.com:5432/postgres
 ```
 
 Si deseas cambiarla, define la variable de entorno `DATABASE_URL`.
